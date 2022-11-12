@@ -1,0 +1,31 @@
+{
+  "communities": [{
+    "city": null,
+    "state": null,
+    "online": true,
+    "eventName": "Donation to K.I.N.G",
+    "organizer": "Kids in Need of Grace",
+    "description": "If you would like to donate to the ministry financially, you can do that <a href=\"https://www.paypal.com/donate/?hosted_button_id=BNKU7TUUPVAQA\">here</a>! Proceeds will go towards digital upkeeping and being a blessing to service events."
+  },{    
+    "city": "Jackson",
+    "state": "MS",
+    "online": false,    
+    "eventName": "Each One Teach One",
+    "organizer": "Treion Jeanjacques",
+    "description": "A weekly in-person Bible Study starting Monday, October 3rd 2022. We not only learn about how to tell God about us, but we learn about Him! From growing spiritually, to being connected with resources, expect to find community in a safe space for those after God’s own heart! If you'd like more information, you can <a href=\"mailto:tdjeanja@gmail.com\">email me here</a>!"
+  },{
+    "city": null,
+    "state": null,
+    "online": true,
+    "eventName": "M.Clay’s Bible Study",
+    "organizer": "Marigny Clay",
+    "description": "This is a youth centered Bible Study, but it's open to all ages. All meetings will be on Thursdays, via Zoom, and displayed on PowerPoint slides. Growing in Christ is difficult to navigate through alone. It can be hard to understand and apply in your life. However, it’s all about progression. Come grow in Christ, it’ll change your life for the better! If you'd like to join, reach out to me via <a href=\"https://www.instagram.com/mclayy_/\">Instagram</a>!"
+  },{
+    "city": "Jackson",
+    "state": "MS",
+    "online": false, 
+    "eventName": "Serving the Community",
+    "organizer": "Bryant Conley & JXN Dream",
+    "description": "JXN Dream is a group of individuals who simply want to be the hands and feet of Jesus, serving downtown Jackson with needed items for the homeless and less fortunate. If you'd like to join us in serving, you can contact me <a href=\"mailto:conleyb91@gmail.com\">here</a>!"
+  }]
+}
