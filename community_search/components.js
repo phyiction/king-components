@@ -200,89 +200,110 @@ class CommunitySearch extends React.Component {
     return e(
       'div', 
       { className: 'king-search' },
-      e('div', 
+      e(
+        'ul', 
         { 
           className: 'king-filter-bar'          
-        },
-        e('span', 
-          { className: 'king-filter-online'}, 
-          e(
-            'input', 
-            { 
-              className: 'king-filter-online-input', 
-              type: 'checkbox', 
-              ref: this.filterOnlineCheckbox,
-              onChange: (event) => {
-                thisComponent.setState((state, props) => {
-                  const nextState = Object.assign({}, state, {
-                    filterOnline: event.target.checked
+        },        
+        e(
+          'li', 
+          {},
+          e('span', 
+            { className: 'king-filter-online'}, 
+            e(
+              'input', 
+              { 
+                className: 'king-filter-online-input', 
+                type: 'checkbox', 
+                ref: this.filterOnlineCheckbox,
+                onChange: (event) => {
+                  thisComponent.setState((state, props) => {
+                    const nextState = Object.assign({}, state, {
+                      filterOnline: event.target.checked
+                    });
+                    return nextState;
                   });
-                  return nextState;
-                });
+                }
               }
-            }
-          ),
-          e('label', { className: 'king-filter-online-label', htmlFor: 'onlineCheckbox' }, 'Online')        
-        ),        
-        e('span',
-          { className: `king-filter-offline ${ thisComponent.state.filterOnline ? 'hide' : 'show' }`},
+            ),
+            ' Meets Online'
+          ),    
+        ),
+        e(
+          'li',
+          {},
+          e('span',
+            { className: `king-filter-offline ${ thisComponent.state.filterOnline ? 'hide' : 'show' }`},
+            e(
+              'input', 
+              { 
+                className: 'king-filter-city', 
+                type: 'text', 
+                onKeyDown: searchOnEnter,
+                placeholder: 'City',
+                ref: this.filterCityInput
+              }
+            ),
+            e(
+              USStatesSelect, 
+              { 
+                states: states, 
+                onChange: (event) => {
+                  thisComponent.setState((state, props) => {
+                    const nextState = Object.assign({}, state, {
+                      filterState: event.target.value
+                    });
+                    return nextState;
+                  });
+                },
+                ref: this.filterStateSelect
+              }
+            )
+          )
+        ),
+        e(
+          'li', 
+          {},
           e(
             'input', 
             { 
-              className: 'king-filter-city', 
+              className: 'king-filter-event', 
               type: 'text', 
+              placeholder: 'Event',
               onKeyDown: searchOnEnter,
-              placeholder: 'City',
-              ref: this.filterCityInput
-            }
-          ),
-          e(
-            USStatesSelect, 
-            { 
-              states: states, 
-              onChange: (event) => {
-                thisComponent.setState((state, props) => {
-                  const nextState = Object.assign({}, state, {
-                    filterState: event.target.value
-                  });
-                  return nextState;
-                });
-              },
-              ref: this.filterStateSelect
+              ref: this.filterEventInput
             }
           )
-        )
-        ,
-        e(
-          'input', 
-          { 
-            className: 'king-filter-event', 
-            type: 'text', 
-            placeholder: 'Event',
-            onKeyDown: searchOnEnter,
-            ref: this.filterEventInput
-          }
         ),
         e(
-          'input', 
-          { 
-            className: 'king-filter-organizer', 
-            type: 'text', 
-            placeholder: 'Organizer',
-            onKeyDown: searchOnEnter,
-            ref: this.filterOrganizerInput
-          }
-        ),
-        e(
-          'button', 
-          { 
-            className: 'king-filter-search-button',
-            onClick: (event) => {
-              search();
+          'li',
+          {},
+          e(
+            'input', 
+            { 
+              className: 'king-filter-organizer', 
+              type: 'text', 
+              placeholder: 'Organizer',
+              onKeyDown: searchOnEnter,
+              ref: this.filterOrganizerInput
             }
-          },
-          'Search'
-        )
+          )
+        ),  
+        e(
+          'li',
+          {},
+          e(
+            'button', 
+            { 
+              className: 'king-filter-search-button',              
+              onClick: (event) => {
+                search();
+              }
+            },
+            'Search'
+          )
+        ),
+        e('li', {}, ' ')
       ),
       e(
         CommunityList, 
@@ -296,19 +317,3 @@ class CommunitySearch extends React.Component {
     );
   }
 }
-
-// get list of communities
-const communitiesJson = 'communities.json';
-window.fetch(communitiesJson)
-  .then((res) => res.json())
-  .then(
-    (result) => {
-      // render community list in element with id 'root'
-      const domContainer = document.querySelector('#root');
-      const root = ReactDOM.createRoot(domContainer);
-      root.render(e(CommunitySearch, result));
-    },
-    (error) => {
-      console.log(error);
-    }
-  );

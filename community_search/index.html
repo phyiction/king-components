@@ -2,20 +2,41 @@
 <html>
   <head>
     <title>Search Communities</title>
+    <link href="//cdn.shopify.com/s/files/1/0585/4783/0984/t/2/assets/theme.scss.css?v=156074562234988175531658185804" rel="stylesheet" type="text/css" media="all" />
     <link rel="stylesheet" href="styles.css" type="text/css" />
   </head>
-  <body>
+  <body class="template-page">
+    <div class="page-container">
 
-    <div id="root"></div>
+      <div id="root"></div>
+      
+      <!-- Load React -->    
+      <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+      <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
 
-    <!-- Load React -->    
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+      <!-- Load DOMPurify -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js" integrity="sha512-/hVAZO5POxCKdZMSLefw30xEVwjm94PAV9ynjskGbIpBvHO9EBplEcdUlBdCKutpZsF+La8Ag4gNrG0gAOn3Ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Load DOMPurify -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js" integrity="sha512-/hVAZO5POxCKdZMSLefw30xEVwjm94PAV9ynjskGbIpBvHO9EBplEcdUlBdCKutpZsF+La8Ag4gNrG0gAOn3Ig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <!-- Load custom components -->   
+      <script src="components.js"></script>
 
-    <!-- Load custom components -->   
-    <script src="components.js"></script>    
+      <script type="text/javascript">
+        // get list of communities
+        const communitiesJson = 'https://cdn.shopify.com/s/files/1/0585/4783/0984/files/communities.json?v=1668270422';
+        window.fetch(communitiesJson)
+          .then((res) => res.json())
+          .then(
+            (result) => {
+              // render community list in element with id 'root'
+              const domContainer = document.querySelector('#root');
+              const root = ReactDOM.createRoot(domContainer);
+              root.render(e(CommunitySearch, result));
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+      </script>
+    </div>
   </body>
 </html>

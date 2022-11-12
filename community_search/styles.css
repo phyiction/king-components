@@ -1,5 +1,41 @@
 /* Styles for community search component */
 
+ul.king-filter-bar{
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+ul.king-filter-bar li {
+  display: inline-block;  
+  vertical-align: middle;
+  text-align: center;
+}
+
+ul.king-filter-bar li div,
+ul.king-filter-bar li span {
+  vertical-align: middle; 
+  text-align: center; 
+  display: inline-block;
+}
+
+.king-filter-online {
+  padding:  13px 15px;
+}
+
+.king-filter-search-button {
+  padding: 13px 15px;  
+  border:  none; 
+}
+
+.king-filter-online,
+.king-filter-city,
+.king-filter-offline,
+.king-filter-event,
+.king-filter-organizer {  
+  margin-right:  0.25em;
+}
+
 .king-list {
   margin-top: 1.5em;
 }
@@ -11,14 +47,6 @@
 
 .king-header {
   font-weight:  bold;
-}
-
-.king-filter-online,
-.king-filter-city,
-.king-filter-offline,
-.king-filter-event,
-.king-filter-organizer {
-  margin-right:  0.25em;
 }
 
 .king-spacer {
