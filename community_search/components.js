@@ -127,6 +127,35 @@ class USStatesSelect extends React.Component {
   }
 }
 
+/**
+ * Triggers action after user stops typing
+ */
+class TriggerActionInput extends React.Component {
+
+  constructor(props){
+    super(props);
+    const dummyFunction = () => console.log('do nothing');
+    this.state = {
+      inputProps: props.inputProps || {},
+      onTrigger: props.onTrigger || dummyFunction,
+      triggerAfterMs: props.triggerAfterMs || 250      
+    };
+  }
+  render(){
+    const thisComponent = this;
+    const { inputProps, onTrigger, triggerAfterMs } = this.state;
+    const combinedProps = Object.assign({}, inputProps, {
+      onKeyDown: (event) => {
+        if(thisComponent.timeoutId !== null || thisComponent.timeoutId !== undefined){
+          clearTimeout(thisComponent.timeoutId);
+        }
+        thisComponent.timeoutId = setTimeout(onTrigger, triggerAfterMs);
+      },
+    });
+    return e('input', combinedProps);
+  }
+}
+
 class CommunitySearch extends React.Component {
 
   constructor(props){
@@ -191,12 +220,6 @@ class CommunitySearch extends React.Component {
       });
     };
 
-    const searchOnEnter = (event) => {
-      if(event.keyCode === 13){
-        search();
-      }
-    };
-
     return e(
       'div', 
       { className: 'king-search' },
@@ -235,13 +258,14 @@ class CommunitySearch extends React.Component {
           e('span',
             { className: `king-filter-offline ${ thisComponent.state.filterOnline ? 'hide' : 'show' }`},
             e(
-              'input', 
+              TriggerActionInput, 
               { 
-                className: 'king-filter-city', 
-                type: 'text', 
-                onKeyDown: searchOnEnter,
-                placeholder: 'City',
-                ref: this.filterCityInput
+                inputProps: {
+                  className: 'king-filter-city',
+                  placeholder: 'City',                
+                  ref: this.filterCityInput
+                },
+                onTrigger: search                
               }
             ),
             e(
@@ -265,13 +289,14 @@ class CommunitySearch extends React.Component {
           'li', 
           {},
           e(
-            'input', 
+            TriggerActionInput, 
             { 
-              className: 'king-filter-event', 
-              type: 'text', 
-              placeholder: 'Event',
-              onKeyDown: searchOnEnter,
-              ref: this.filterEventInput
+              inputProps: {
+                className: 'king-filter-event',
+                placeholder: 'Event',              
+                ref: this.filterEventInput
+              },
+              onTrigger: search              
             }
           )
         ),
@@ -279,28 +304,15 @@ class CommunitySearch extends React.Component {
           'li',
           {},
           e(
-            'input', 
+            TriggerActionInput, 
             { 
-              className: 'king-filter-organizer', 
-              type: 'text', 
-              placeholder: 'Organizer',
-              onKeyDown: searchOnEnter,
-              ref: this.filterOrganizerInput
+              inputProps: {
+                className: 'king-filter-organizer',
+                placeholder: 'Organizer',
+                ref: this.filterOrganizerInput
+              },
+              onTrigger: search              
             }
-          )
-        ),  
-        e(
-          'li',
-          {},
-          e(
-            'button', 
-            { 
-              className: 'king-filter-search-button',              
-              onClick: (event) => {
-                search();
-              }
-            },
-            'Search'
           )
         ),
         e('li', {}, ' ')
