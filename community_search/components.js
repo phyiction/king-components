@@ -58,7 +58,7 @@ class CommunityList extends React.Component {
 
     const { communities, filterOnline, filterCity, filterState, filterEventName, filterOrganizer, page, pageSize } = this.state;
     
-    const matchingCommunities = communities
+    const matchingListItems = communities
       .map((community, index) => {
 
         let matches = true;
@@ -84,26 +84,34 @@ class CommunityList extends React.Component {
         }
 
         if(matches){
-          return community
+          return e(Community, { key: index, community: community });
         }else{
           return null;
         }
       })
       .reduce((accumulator, community) => {
-        if(community != null){
+        if(community !== null){
           accumulator.push(community);
         }
         return accumulator;
       }, []);
 
-    const listItems = matchingCommunities.map((community, index) => {
+    const listItems = matchingListItems
+      .map((communityElement, index) => {
+        if(index >= page*pageSize && index < (page+1)*pageSize) {
+          return communityElement;
+        }else{
+          return null;
+        }
+      })
+      .reduce((accumulator, communityElement) => {
+        if(communityElement !== null){
+          accumulator.push(communityElement);
+        }
+        return accumulator;
+      }, []);
 
-      if(index >= page*pageSize && index < (page+1)*pageSize) {
-        return e(Community, { key: index, community: community });
-      }
-    });
-
-    const pageCount = Math.ceil(matchingCommunities.length/pageSize);
+    const pageCount = Math.ceil(matchingListItems.length/pageSize);
 
     const pages = (pageCount) => {
       let spans = [];
@@ -133,7 +141,7 @@ class CommunityList extends React.Component {
     return e(
       'div', 
       { className: 'king-list' },      
-      listItems,
+      e('div', { className: 'king-list-items' }, listItems ),
       e(
         'div', 
         { className: `king-empty-list-message ${listItems.length === 0 ? 'show' : 'hide' }` }, 
