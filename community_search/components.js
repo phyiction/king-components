@@ -47,15 +47,18 @@ class CommunityList extends React.Component {
   constructor(props){
     super(props);
 
-    this.state = Object.assign({}, props);
+    this.state = Object.assign({}, props, {
+      page: 0, 
+      pageSize: 10
+    });
   }
 
   render(){
     const thisComponent = this;
 
-    const { communities, filterOnline, filterCity, filterState, filterEventName, filterOrganizer } = this.state;
+    const { communities, filterOnline, filterCity, filterState, filterEventName, filterOrganizer, page, pageSize } = this.state;
     
-    const listItems = communities
+    const matchingCommunities = communities
       .map((community, index) => {
 
         let matches = true;
@@ -81,23 +84,96 @@ class CommunityList extends React.Component {
         }
 
         if(matches){
-          return e(Community, { key: index, community: community })
+          return community
         }else{
           return null;
         }
       })
-      .reduce((acc, c) => {
-        if(c != null){
-          acc.push(c);
+      .reduce((accumulator, community) => {
+        if(community != null){
+          accumulator.push(community);
         }
-        return acc;
+        return accumulator;
       }, []);
+
+    const listItems = matchingCommunities.map((community, index) => {
+
+      if(index >= page*pageSize && index < (page+1)*pageSize) {
+        return e(Community, { key: index, community: community });
+      }
+    });
+
+    const pageCount = Math.ceil(matchingCommunities.length/pageSize);
+
+    const pages = (pageCount) => {
+      let spans = [];
+      for(let p = 0; p < pageCount; p++){
+        spans.push(
+          e(
+            'a', 
+            { 
+              className: `king-list-pager-page ${p === page ? 'selected' : ''}`, 
+              href: '#',
+              key: p+1,
+              onClick: (event) => {              
+                thisComponent.setState((state, props) => {
+                  return Object.assign({}, state, {
+                    page: p
+                  });                
+                });
+              }
+            }, 
+            p+1
+          )
+        );
+      }
+      return spans;
+    };
 
     return e(
       'div', 
       { className: 'king-list' },      
       listItems,
-      e('div', { className: `king-empty-list-message ${listItems.length === 0 ? 'show' : 'hide' }` }, 'No communities match your search criteria.')
+      e(
+        'div', 
+        { className: `king-empty-list-message ${listItems.length === 0 ? 'show' : 'hide' }` }, 
+        'No communities match your search criteria.'
+      ),
+      e(
+        'div', 
+        { className: 'king-list-pager' },
+        e(
+          'a', 
+          { 
+            className: 'king-list-pager-prev-page-button', 
+            dangerouslySetInnerHTML: { '__html': '&laquo;' },
+            href: '#',
+            onClick: (event) => {              
+              thisComponent.setState((state, props) => {
+                return Object.assign({}, state, {
+                  page: thisComponent.state.page === 0 ? pageCount-1 : thisComponent.state.page - 1
+                });                
+              });
+            }
+          }
+        ),
+        pages(pageCount),
+        e(
+          'a', 
+          { 
+            className: 'king-list-pager-next-page-button', 
+            dangerouslySetInnerHTML: { '__html': '&raquo;' },
+            href: '#',
+            onClick: (event) => {
+              thisComponent.setState((state, props) => {
+                return Object.assign({}, state, {
+                  page: (thisComponent.state.page + 1)%pageCount
+                });                
+              });
+            }
+          }
+        )
+      )
     );
   }
 }
